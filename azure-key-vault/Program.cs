@@ -57,7 +57,7 @@ string decryptedData = System.Text.Encoding.UTF8.GetString(decryptedResult.Plain
 Console.WriteLine($"Decrypted Data: {decryptedData}");
 
 /**
- * Example 2: Use Azure Key Vault retrieving a secret
+ * Example 2: Use Azure Key Vault to retrieve a secret
  */
 
 string secretName = "dbpassword";
