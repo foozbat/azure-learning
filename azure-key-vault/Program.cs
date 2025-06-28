@@ -1,29 +1,33 @@
 ﻿/**
-  This code snippet demonstrates how to create a KeyClient instance using Azure Identity's ClientSecretCredential.
-
-  Author: Aaron Bishop
-  Email:  github@foozbat.net
-*/
+ * Azure Key Vault Example
+ *
+ * This example assumes you have a Key Vault set up.
+ * Replace <tenant-id>, <client-id>, <client-secret>, <vault-name>, and <key-name> with your actual values.
+ * Ensure you have a role assignment for the client ID in your Key Vault with appropriate permissions.
+ *
+ * @author: Aaron Bishop (github.com/foozbat)
+ */
 
 using Azure.Identity;
 using Azure.Security.KeyVault.Keys;
 using Azure.Security.KeyVault.Keys.Cryptography;
+using Azure.Security.KeyVault.Secrets;
+
+string tenantId = "<tenant-id>";
+string clientId = "<client-id>";
+string clientSecret = "<client-secret>";
+string keyVaultUri = "https://<vault-name>.vault.azure.net/";
+
+ClientSecretCredential clientSecretCredential = new (tenantId, clientId, clientSecret);
+
+/**
+ * Example 1: Use Azure Key Vault to encrypt and decrypt data
+ */
 
 // Example data to encrypt and decrypt
 string myData = "This is a secret message.";
 
-// Get the KeyClient using ClientSecretCredential
-
-ClientSecretCredential clientSecretCredential = new ClientSecretCredential(
-    "<tenant-id>",
-    "<client-id>>",
-    "<client-secret>"
-);
-
-KeyClient keyClient = new KeyClient(
-    new Uri("https://<vault-name>.vault.azure.net/"),
-    clientSecretCredential
-);
+KeyClient keyClient = new (new Uri(keyVaultUri), clientSecretCredential);
 
 var key = keyClient.GetKey("<key-name>");
 
@@ -51,3 +55,19 @@ DecryptResult decryptedResult = cryptoClient.Decrypt(
 string decryptedData = System.Text.Encoding.UTF8.GetString(decryptedResult.Plaintext);
 
 Console.WriteLine($"Decrypted Data: {decryptedData}");
+
+/**
+ * Example 2: Use Azure Key Vault retrieving a secret
+ */
+
+string secretName = "dbpassword";
+
+SecretClient secretClient = new SecretClient(
+    new Uri("keyVaultUri"),
+    clientSecretCredential
+);
+
+var secret = secretClient.GetSecret(secretName);
+
+Console.WriteLine($"Secret Name: {secret.Value.Name}");
+Console.WriteLine($"Secret Value: {secret.Value.Value}");
