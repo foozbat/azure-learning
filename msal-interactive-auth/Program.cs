@@ -1,11 +1,20 @@
 ﻿using Microsoft.Identity.Client;
 using dotenv.net;
 
-// Load environment variables from .env file
+// Load environment variables from .env file (if present)
 DotEnv.Load();
 var envVars = DotEnv.Read();
+
+// Read Azure AD app registration values from environment
 string _clientId = envVars["CLIENT_ID"];
 string _tenantId = envVars["TENANT_ID"];
+
+// Validate that the required environment variables are set
+if (string.IsNullOrEmpty(clientId) || string.IsNullOrEmpty(tenantId))
+{
+    Console.WriteLine("Please set CLIENT_ID and TENANT_ID environment variables.");
+    return;
+}
 
 // Define the scopes required for authentication
 string[] _scopes = { "User.Read" };
