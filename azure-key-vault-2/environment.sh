@@ -2,6 +2,8 @@ resourceGroup=myResourceGroup
 location=eastus
 keyVaultName=mykeyvaultname$RANDOM
 
+az login
+
 az group create --name $resourceGroup --location $location
 
 az keyvault create --name $keyVaultName --resource-group $resourceGroup --location $location
@@ -21,5 +23,3 @@ az keyvault secret set --vault-name $keyVaultName \
     --name "MySecret" --value "My secret value"
 
 az keyvault secret show --name "MySecret" --vault-name $keyVaultName
-
-az login
