@@ -63,7 +63,7 @@ Console.WriteLine($"Decrypted Data: {decryptedData}");
 string secretName = "dbpassword";
 
 SecretClient secretClient = new SecretClient(
-    new Uri("keyVaultUri"),
+    new Uri(keyVaultUri),
     clientSecretCredential
 );
 
