@@ -6,7 +6,7 @@ using dotenv.net;
 DotEnv.Load();
 var envVars = DotEnv.Read();
 
-string KeyVaultUrl = envVars["KEY_VAULT_URL"];;
+string KeyVaultUrl = envVars["KEY_VAULT_URL"];
 
 // Configure authentication options for connecting to Azure Key Vault
 DefaultAzureCredentialOptions options = new()
